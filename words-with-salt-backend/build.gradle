@@ -1,0 +1,8 @@
+apply plugin: 'scala'
+
+dependencies {
+    compile group: 'org.scala-lang', name: 'scala-library', version: scalaVersion
+    compile group: 'com.typesafe.scala-logging', name: "scala-logging_$scalaMajorVersion", version: scalaLoggingVersion
+    compile group: 'com.typesafe.akka', name: "akka-actor_$scalaMajorVersion", version: akkaVersion
+    compile group: 'com.typesafe.akka', name: "akka-slf4j_$scalaMajorVersion", version: akkaVersion
+}

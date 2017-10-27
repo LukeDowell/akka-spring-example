@@ -1,0 +1,6 @@
+rootProject.name = 'words-with-salt-spring-parent'
+
+include 'pruebas-grandes'
+include 'words-with-salt-api'
+include 'words-with-salt-backend'
+
