@@ -1,31 +1,21 @@
 package org.badgrades.wordswithsalt.backend.concurrency.word
 
-import scala.collection.JavaConverters._
-import akka.actor.{Actor, ActorLogging, Props}
+import akka.actor.{ActorLogging, Props}
 import org.badgrades.wordswithsalt.api.domain.SaltyWord
-import org.badgrades.wordswithsalt.backend.concurrency.word.WordPersistenceActor.
-{WriteWord, WordEntityResponse, RetrieveAllWords, RetrieveWordById, RetrieveWordByPhrase}
+import org.badgrades.wordswithsalt.backend.concurrency.SpringActor
+import org.badgrades.wordswithsalt.backend.concurrency.word.WordPersistenceActor.{RetrieveWordById, RetrieveWordByPhrase, WordEntityResponse, WriteWord}
 import org.badgrades.wordswithsalt.backend.persistence.{SaltyWordEntity, SaltyWordRepository}
-import org.springframework.beans.factory.config.ConfigurableBeanFactory
-import org.springframework.context.annotation.Scope
-import org.springframework.stereotype.Component
 
-@Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-class WordPersistenceActor(saltyWordRepository: SaltyWordRepository) extends Actor with ActorLogging {
+class WordPersistenceActor() extends SpringActor with ActorLogging {
+  val saltyWordRepository: SaltyWordRepository = springContext().getBean(classOf[SaltyWordRepository])
 
   override def preStart(): Unit = log.info(s"${self.path} Starting up")
   override def postStop(): Unit = log.info(s"${self.path} Stopping...")
 
   override def receive = {
-    case WriteWord(word) => {
+    case WriteWord(word) =>
       val saltyEntity = SaltyWordEntity(word.phrase, word.description)
       sender() ! WordEntityResponse(saltyWordRepository.save(saltyEntity))
-    }
-
-    case RetrieveAllWords => {
-      val allWords: Seq[SaltyWordEntity] = saltyWordRepository.findAll().asScala
-    }
 
     case RetrieveWordById(id) => sender() ! WordEntityResponse(saltyWordRepository.findById(id))
 
@@ -36,7 +26,7 @@ class WordPersistenceActor(saltyWordRepository: SaltyWordRepository) extends Act
 }
 
 object WordPersistenceActor {
-  def props(wordRepo: SaltyWordRepository): Props = Props(new WordPersistenceActor(wordRepo))
+  def props(): Props = Props(new WordPersistenceActor())
 
   case class WriteWord(saltyWord: SaltyWord)
 

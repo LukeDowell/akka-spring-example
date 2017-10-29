@@ -1,6 +1,7 @@
 ext {
     springBootVersion = '1.4.4.RELEASE'
     akkaVersion = '2.5.4'
+    akkaTestKitVersion = '2.5.4'
     javaxWsRsVersion = '2.1'
     scalaVersion = '2.11.8'
     scalaMajorVersion = '2.11'

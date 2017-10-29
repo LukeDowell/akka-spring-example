@@ -6,16 +6,21 @@ import org.badgrades.wordswithsalt.api.domain.SaltyWord
 
 @Entity
 @Table(name = "SaltyWords")
-case class SaltyWordEntity(
-                          var phrase: String,
-                          var description: String
-                          ) {
-
-  def this() = this("", "")
+case class SaltyWordEntity() {
 
   @Id
   @GeneratedValue
   var id: Long = _
 
-  def toDomain() = SaltyWord(id, phrase, description)
+  var phrase: String = _
+
+  var description: String = _
+
+  def toDomain() = {
+    val domain = SaltyWord(
+      id,
+      phrase,
+      description
+    )
+  }
 }

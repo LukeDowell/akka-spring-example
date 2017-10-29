@@ -9,8 +9,6 @@ class WordControllerSpec extends WordSpec with Matchers {
     "return a word given an accepted id" in {
 
     }
-
-    ""
   }
 
 }

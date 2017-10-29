@@ -1,16 +1,22 @@
 package org.badgrades.wordswithsalt.backend
 
 import akka.actor.ActorSystem
-import org.scalatest.{BeforeAndAfterAll, FunSpec}
+import akka.testkit.{ImplicitSender, TestKit}
+import org.badgrades.wordswithsalt.backend.concurrency.SpringExtension
+import org.mockito.Mockito
+import org.scalatest.{BeforeAndAfterAll, TestSuite}
+import org.springframework.context.ConfigurableApplicationContext
 
-import scala.concurrent.ExecutionContext
+abstract class ActorTestSuite extends TestKit(ActorSystem("test-system"))
+  with TestSuite
+  with ImplicitSender
+  with BeforeAndAfterAll {
 
-trait ActorTestSuite extends FunSpec with BeforeAndAfterAll {
-  implicit val testSystem: ActorSystem = ActorSystem("test-system")
-  implicit val ec: ExecutionContext = testSystem.dispatcher
+  val applicationContext: ConfigurableApplicationContext = Mockito.mock(classOf[ConfigurableApplicationContext])
+  system.registerExtension(SpringExtension).initialize(applicationContext)
 
-  override protected def afterAll {
-    testSystem.terminate()
+  override def afterAll {
+    system.terminate()
     super.afterAll()
   }
 }

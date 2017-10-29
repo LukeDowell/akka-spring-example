@@ -16,19 +16,19 @@ import org.springframework.context.{ApplicationContext, ConfigurableApplicationC
   */
 object SpringExtension extends ExtensionId[SpringExtension] with ExtensionIdProvider {
 
-  override def createExtension(system: ExtendedActorSystem) = new SpringExtension(system)
+  override def createExtension(system: ExtendedActorSystem) = new SpringExtension
   override def lookup: SpringExtension.type = SpringExtension
 }
 
-class SpringExtension(system: ExtendedActorSystem) extends Extension {
-  private var _context: ConfigurableApplicationContext = _
+class SpringExtension extends Extension {
+  private var context: ConfigurableApplicationContext = _
 
-  def applicationContext() = _context
+  def applicationContext(): ConfigurableApplicationContext = context
 
-  def initialize(applicationContext: ConfigurableApplicationContext) = {
+  def initialize(applicationContext: ConfigurableApplicationContext): Unit = {
     require(applicationContext != null, "ApplicationContext cannot be null")
-    require(_context == null, "ApplicationContext has already been set")
+    require(context == null, "ApplicationContext has already been set")
 
-    _context = applicationContext
+    context = applicationContext
   }
 }
