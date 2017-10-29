@@ -1,19 +1,16 @@
 ext {
     springBootVersion = '1.4.4.RELEASE'
-
     akkaVersion = '2.5.4'
-
+    javaxWsRsVersion = '2.1'
     scalaVersion = '2.11.8'
     scalaMajorVersion = '2.11'
     scalaLoggingVersion = '3.7.2'
     scalaTestVersion = '3.0.4'
-
     gatlingVersion = '2.2.2'
+    mockitoVersion = '1.10.19'
 }
 
 allprojects {
-    apply plugin: 'idea'
-
     group = 'org.badgrades'
 
     repositories {

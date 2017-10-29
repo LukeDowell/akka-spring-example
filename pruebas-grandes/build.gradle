@@ -1,8 +1,7 @@
-apply plugin: 'application'
+//apply plugin: 'application'
 apply plugin: 'scala'
 
 dependencies {
-    compile project(":words-with-salt-api")
     compile group: 'org.scala-lang', name: 'scala-library', version: scalaVersion
     compile group: 'io.gatling.highcharts', name: 'gatling-charts-highcharts', version: gatlingVersion
 }

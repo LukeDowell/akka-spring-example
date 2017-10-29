@@ -1,5 +1,21 @@
+buildscript {
+    ext {
+        springBootVersion = '1.4.4.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+    }
+}
+
 apply plugin: 'scala'
+apply plugin: 'org.springframework.boot'
 
 dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web") {
+        exclude module: "spring-boot-starter-tomcat"
+    }
     compile group: 'org.scala-lang', name: 'scala-library', version: scalaVersion
 }
