@@ -16,11 +16,9 @@ case class SaltyWordEntity() {
 
   var description: String = _
 
-  def toDomain() = {
-    val domain = SaltyWord(
+  def toDomain = SaltyWord(
       id,
       phrase,
       description
     )
-  }
 }

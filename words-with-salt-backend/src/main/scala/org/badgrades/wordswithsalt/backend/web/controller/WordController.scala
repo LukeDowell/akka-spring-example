@@ -29,7 +29,7 @@ class WordController @Autowired()(
     wordActorRef ! PoisonPill
 
     Await.result(wordFuture, timeout.duration) match {
-      case WordEntityResponse(wordEntity) => ResponseEntity.ok(wordEntity.toDomain())
+      case WordEntityResponse(wordEntity) => ResponseEntity.ok(wordEntity.toDomain)
       case _ => ResponseEntity.notFound().build()
     }
   }
@@ -40,7 +40,7 @@ class WordController @Autowired()(
     wordActorRef ! PoisonPill
 
     Await.result(wordFuture, timeout.duration) match {
-      case WordEntityResponse(wordEntity) => ResponseEntity.ok(wordEntity.toDomain())
+      case WordEntityResponse(wordEntity) => ResponseEntity.ok(wordEntity.toDomain)
       case _ => ResponseEntity.notFound().build()
     }
   }
@@ -51,7 +51,7 @@ class WordController @Autowired()(
     wordActorRef ! PoisonPill
 
     Await.result(wordFuture, timeout.duration) match {
-      case AllWordsResponse(words) => ResponseEntity.ok(words.map(word => word.toDomain()))
+      case AllWordsResponse(words) => ResponseEntity.ok(words.map(word => word.toDomain))
       case _ => ResponseEntity.notFound().build()
     }
   }

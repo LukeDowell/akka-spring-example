@@ -14,7 +14,10 @@ class WordPersistenceActor() extends SpringActor with ActorLogging {
 
   override def receive = {
     case WriteWord(word) =>
-      val saltyEntity = SaltyWordEntity(word.phrase, word.description)
+      val saltyEntity = SaltyWordEntity()
+      saltyEntity.phrase = word.phrase
+      saltyEntity.description = word.description
+      log.info(s"Writing word $saltyEntity")
       sender() ! WordEntityResponse(saltyWordRepository.save(saltyEntity))
 
     case RetrieveWordById(id) => sender() ! WordEntityResponse(saltyWordRepository.findById(id))
