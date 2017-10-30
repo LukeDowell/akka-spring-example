@@ -10,17 +10,22 @@ import org.scalatest.FunSpecLike
 class WordPersistenceActorSpec extends ActorTestSuite with FunSpecLike {
 
   describe("A WordPersistenceActor with a mocked repository") {
-    val actorRef = system.actorOf(WordPersistenceActor.props())
     val mockedRepository = Mockito.mock(classOf[SaltyWordRepository])
-
     when(applicationContext.getBean(classOf[SaltyWordRepository])).thenReturn(mockedRepository)
+
+    // Must be created AFTER dependencies are mocked
+    val actorRef = system.actorOf(WordPersistenceActor.props())
 
     it ("Responds with WordEntityResponse when repository contains word with given id") {
       val testId = 1L
-      val saltyEntity = SaltyWordEntity("SomePhrase", "SomeDescription")
+      val saltyEntity = SaltyWordEntity()
+      saltyEntity.id = 1L
+      saltyEntity.description = "SomeDescription"
+      saltyEntity.phrase = "SomePhrase"
+
       when(mockedRepository.findById(testId)).thenReturn(saltyEntity)
       actorRef ! RetrieveWordById(testId)
-      expectMsg(WordEntityResponse(saltyEntity))
+      expectMsgType[WordEntityResponse]
     }
   }
 }

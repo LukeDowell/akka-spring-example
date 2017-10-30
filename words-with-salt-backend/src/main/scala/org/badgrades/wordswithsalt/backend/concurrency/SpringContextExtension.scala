@@ -14,13 +14,13 @@ import org.springframework.context.{ApplicationContext, ConfigurableApplicationC
   * Akka Documentation:
   * https://doc.akka.io/api/akka/current/akka/actor/Extension.html
   */
-object SpringExtension extends ExtensionId[SpringExtension] with ExtensionIdProvider {
+object SpringContextExtension extends ExtensionId[SpringContextExtension] with ExtensionIdProvider {
 
-  override def createExtension(system: ExtendedActorSystem) = new SpringExtension
-  override def lookup: SpringExtension.type = SpringExtension
+  override def createExtension(system: ExtendedActorSystem) = new SpringContextExtension
+  override def lookup: SpringContextExtension.type = SpringContextExtension
 }
 
-class SpringExtension extends Extension {
+class SpringContextExtension extends Extension {
   private var context: ConfigurableApplicationContext = _
 
   def applicationContext(): ConfigurableApplicationContext = context

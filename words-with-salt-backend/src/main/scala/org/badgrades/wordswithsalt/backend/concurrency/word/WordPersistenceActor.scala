@@ -2,12 +2,12 @@ package org.badgrades.wordswithsalt.backend.concurrency.word
 
 import akka.actor.{ActorLogging, Props}
 import org.badgrades.wordswithsalt.api.domain.SaltyWord
-import org.badgrades.wordswithsalt.backend.concurrency.SpringActor
+import org.badgrades.wordswithsalt.backend.concurrency.SpringContextAwareActor
 import org.badgrades.wordswithsalt.backend.concurrency.word.WordPersistenceActor.{RetrieveWordById, RetrieveWordByPhrase, WordEntityResponse, WriteWord}
 import org.badgrades.wordswithsalt.backend.persistence.{SaltyWordEntity, SaltyWordRepository}
 
-class WordPersistenceActor() extends SpringActor with ActorLogging {
-  val saltyWordRepository: SaltyWordRepository = springContext().getBean(classOf[SaltyWordRepository])
+class WordPersistenceActor extends SpringContextAwareActor with ActorLogging {
+  val saltyWordRepository: SaltyWordRepository = getBean(classOf[SaltyWordRepository])
 
   override def preStart(): Unit = log.info(s"${self.path} Starting up")
   override def postStop(): Unit = log.info(s"${self.path} Stopping...")
@@ -18,11 +18,11 @@ class WordPersistenceActor() extends SpringActor with ActorLogging {
       saltyEntity.phrase = word.phrase
       saltyEntity.description = word.description
       log.info(s"Writing word $saltyEntity")
-      sender() ! WordEntityResponse(saltyWordRepository.save(saltyEntity))
+      sender ! WordEntityResponse(saltyWordRepository.save(saltyEntity))
 
-    case RetrieveWordById(id) => sender() ! WordEntityResponse(saltyWordRepository.findById(id))
+    case RetrieveWordById(id) => sender ! WordEntityResponse(saltyWordRepository.findById(id))
 
-    case RetrieveWordByPhrase(phrase) => sender() ! WordEntityResponse(saltyWordRepository.findByPhrase(phrase))
+    case RetrieveWordByPhrase(phrase) => sender ! WordEntityResponse(saltyWordRepository.findByPhrase(phrase))
 
     case _ => log.warning("Unknown message retrieved")
   }
