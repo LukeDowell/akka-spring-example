@@ -9,8 +9,8 @@ import org.badgrades.wordswithsalt.backend.persistence.{SaltyWordEntity, SaltyWo
 class WordPersistenceActor extends SpringContextAwareActor with ActorLogging {
   val saltyWordRepository: SaltyWordRepository = getBean(classOf[SaltyWordRepository])
 
-  override def preStart(): Unit = log.info(s"${self.path} Starting up")
-  override def postStop(): Unit = log.info(s"${self.path} Stopping...")
+  override def preStart(): Unit = log.info(s"${self.path} Starting up...")
+  override def postStop(): Unit = log.info(s"${self.path} Stopped!")
 
   override def receive = {
     case WriteWord(word) =>

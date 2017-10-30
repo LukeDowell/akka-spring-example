@@ -1,10 +1,13 @@
 package org.badgrades.wordswithsalt.backend.concurrency.word
 
+import org.badgrades.wordswithsalt.api.domain.SaltyWord
 import org.badgrades.wordswithsalt.backend.ActorTestSuite
-import org.badgrades.wordswithsalt.backend.concurrency.word.WordPersistenceActor.{RetrieveWordById, WordEntityResponse}
+import org.badgrades.wordswithsalt.backend.concurrency.word.WordPersistenceActor.{RetrieveWordById, WordEntityResponse, WriteWord}
 import org.badgrades.wordswithsalt.backend.persistence.{SaltyWordEntity, SaltyWordRepository}
 import org.mockito.Mockito
 import org.mockito.Mockito._
+import org.mockito.Matchers._
+import org.mockito.AdditionalAnswers.returnsFirstArg
 import org.scalatest.FunSpecLike
 
 class WordPersistenceActorSpec extends ActorTestSuite with FunSpecLike {
@@ -26,6 +29,19 @@ class WordPersistenceActorSpec extends ActorTestSuite with FunSpecLike {
       when(mockedRepository.findById(testId)).thenReturn(saltyEntity)
       actorRef ! RetrieveWordById(testId)
       expectMsgType[WordEntityResponse]
+    }
+
+    it ("Saves an entity with the phrase and description provided to the receive method") {
+      val someDesc = "SomeDescription"
+      val somePhrase = "SomePhrase"
+      val saltyWord = SaltyWord(phrase = somePhrase, description = someDesc)
+
+      when(mockedRepository.save(any[SaltyWordEntity])).thenAnswer(returnsFirstArg())
+      actorRef ! WriteWord(saltyWord)
+      expectMsgPF() {
+        case WordEntityResponse(SaltyWordEntity(_, `somePhrase`, `someDesc`)) => ()
+        case _ => fail()
+      }
     }
   }
 }

@@ -7,7 +7,7 @@ import org.mockito.Mockito
 import org.scalatest.{BeforeAndAfterAll, TestSuite}
 import org.springframework.context.ConfigurableApplicationContext
 
-abstract class ActorTestSuite extends TestKit(ActorSystem("test-system"))
+abstract class ActorTestSuite extends TestKit(ActorSystem("testSystem"))
   with TestSuite
   with ImplicitSender
   with BeforeAndAfterAll {
