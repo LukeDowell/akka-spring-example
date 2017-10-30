@@ -11,10 +11,10 @@ package org.badgrades.wordswithsalt.api.domain
   */
 case class WeatherRecord
 (
-  windSpeed: String,
-  maxWindSpeed: String,
-  windDirection: (Int, String),
-  airTemperature: String,
-  dewPoint: String,
-  relativeHumidity: Double
+  windSpeed: String = "",
+  maxWindSpeed: String = "",
+  windDirection: (Int, String) = (0, ""),
+  airTemperature: String = "",
+  dewPoint: String = "",
+  relativeHumidity: Double = 1.0
 )
